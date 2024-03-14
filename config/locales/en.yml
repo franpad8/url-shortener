@@ -29,3 +29,10 @@
 
 en:
   hello: "Hello world"
+  helpers:
+      label:
+          url:
+            long_url: 'Enter your url'
+      submit:
+          url:
+            create: 'Shorten Url'
