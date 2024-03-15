@@ -8,4 +8,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "urls#new"
+
+  get '/:short_url' => "urls#redirect_to_long_url"
 end

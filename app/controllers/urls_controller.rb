@@ -19,9 +19,18 @@ class UrlsController < ApplicationController
   def edit
   end
 
+  def redirect_to_long_url
+    long_url = Url.find_by!(short_url: params[:short_url]).long_url
+
+    redirect_to(long_url, allow_other_host: true)
+  end
+
   # POST /urls or /urls.json
   def create
     @url = Url.new(url_params)
+
+    chars = [*'A'..'Z', *'a'..'z', *'0'..'9', '_', '!']
+    @url.short_url = Time.zone.now.to_i.digits(64).reverse.map { |i| chars[i] }.join
 
     respond_to do |format|
       if @url.save

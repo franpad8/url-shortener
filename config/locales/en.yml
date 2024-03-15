@@ -32,7 +32,7 @@ en:
   helpers:
       label:
           url:
-            long_url: 'Enter your url'
+            long_url: 'Paste a long URL'
       submit:
           url:
-            create: 'Shorten Url'
+            create: 'Get your short link'
