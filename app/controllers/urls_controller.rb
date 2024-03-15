@@ -20,9 +20,11 @@ class UrlsController < ApplicationController
   end
 
   def redirect_to_long_url
-    long_url = Url.find_by!(short_url: params[:short_url]).long_url
+    url = Url.find_by!(short_url: params[:short_url])
 
-    redirect_to(long_url, allow_other_host: true)
+    url.validate!
+
+    redirect_to(url.long_url, allow_other_host: true)
   end
 
   # POST /urls or /urls.json
