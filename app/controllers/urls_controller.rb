@@ -20,7 +20,15 @@ class UrlsController < ApplicationController
   end
 
   def redirect_to_long_url
-    url = Url.find_by!(short_url: params[:short_url])
+    short_url = params[:short_url]
+    cached_url = Rails.cache.read(short_url)
+    if cached_url
+      url = Url.new(cached_url)
+    else
+      url = Url.find_by!(short_url: params[:short_url])
+      Rails.cache.write url.short_url, url.attributes, expires_in: 1.day
+    end
+
 
     url.validate!
 
@@ -36,6 +44,7 @@ class UrlsController < ApplicationController
 
     respond_to do |format|
       if @url.save
+        Rails.cache.write @url.short_url, @url.attributes, expires_in: 1.day
         format.html { redirect_to url_url(@url), notice: "Url was successfully created." }
         format.json { render :show, status: :created, location: @url }
       else
